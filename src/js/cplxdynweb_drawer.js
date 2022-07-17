@@ -55,6 +55,7 @@ for(i = 0; i < imageMimes.length; i++) {
     [ [128,32,0], [80,128,16], [248,224,64] ],
     [ [248,248,248], [4,0,32], [64,152,248] ],
     [ [255,255,255], [192,220,220], [64,160,220], [160,220,128], [248,255,0], [255,0,0] ],
+    [ [0,0,0], [0,0,200], [40,200,240], [0,240,240], [0,240,0], [240,240,0], [240,0,0], [100,0,0] ],   
     [ ]
   ];
 
@@ -118,6 +119,7 @@ for(i = 0; i < imageMimes.length; i++) {
   this.show_domain = true;
   this.axes_thick = 1.0;
   this.boundary_thick = 1.0;
+  this.boundary_thick2 = 0.6;  
 
   this.max_its = 64;
   //this.max_mod = 2.0;
@@ -581,7 +583,8 @@ for(i = 0; i < imageMimes.length; i++) {
 
     if(!color_maps[cmi]) ctrl_colors = [ [0,0,255], [0,255,255], [0,255,0], [255,255,0], [255,0,0] ];
     else {
-      if( cmi == 17 ) {
+      ncms = 18;
+      if( cmi == ncms ) {
         var custom_colors = [];
         custom_colors[0] = color1;
         custom_colors[1] = color2;
@@ -591,10 +594,10 @@ for(i = 0; i < imageMimes.length; i++) {
         custom_colors[5] = color6;
         custom_colors[6] = color7;
         custom_colors[7] = color8;
-        color_maps[17] = [];
+        color_maps[ncms] = [];
         for(i=0;i<num_custom_colors;++i) {
           ctrl_colors[i] = hexToRgb(custom_colors[i]);
-          color_maps[17][i] = ctrl_colors[i];
+          color_maps[ncms][i] = ctrl_colors[i];
         }
       }
       else
@@ -642,7 +645,8 @@ for(i = 0; i < imageMimes.length; i++) {
 
     if(!color_maps[cmi]) ctrl_colors = [ [0,0,255], [0,255,255], [0,255,0], [255,255,0], [255,0,0] ];
     else {
-      if( cmi == 17 ) {
+      ncms = 18;
+      if( cmi == ncms ) {
         var custom_colors = [];
         custom_colors[0] = color1;
         custom_colors[1] = color2;
@@ -652,10 +656,10 @@ for(i = 0; i < imageMimes.length; i++) {
         custom_colors[5] = color6;
         custom_colors[6] = color7;
         custom_colors[7] = color8;
-        color_maps[17] = [];
+        color_maps[ncms] = [];
         for(i=0;i<num_custom_colors;++i) {
           ctrl_colors[i] = hexToRgb(custom_colors[i]);
-          color_maps[17][i] = ctrl_colors[i];
+          color_maps[ncms][i] = ctrl_colors[i];
         }
       }
       else
@@ -937,7 +941,8 @@ for(i = 0; i < imageMimes.length; i++) {
     right_kind = 3;
 
     var n = 0, i = 0, index = 0, N = 0;
-    var psz = boundary_thick, epsilon = (max_xr-min_xr)/(2.0*canvas_side);//(max_xr-min_xr+0.0001)/(2.0*canvas_side-2.0);
+    var psz = boundary_thick, psz2 = boundary_thick2;
+    var epsilon = (max_xr-min_xr)/(2.0*canvas_side);//(max_xr-min_xr+0.0001)/(2.0*canvas_side-2.0);
 
     epsilon *= epsilon;
 
@@ -992,7 +997,8 @@ for(i = 0; i < imageMimes.length; i++) {
 
         index = 0;
 
-        psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+        //psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+        psz = boundary_thick + (boundary_thick2-boundary_thick)*n/max_its;        
 
         z = Maths.f_1(points_prev[0]);
         if( Maths.distanceToDomain(z) < r2_ /*&& (z.r*z.r+z.i*z.i) < max_mod2*/ ) {
@@ -1073,7 +1079,8 @@ for(i = 0; i < imageMimes.length; i++) {
        //c2dr.fillStyle = 'rgb('+palette[n][0]+','+palette[n][1]+','+palette[n][2]+')';
 
         //psz = 1.05 - 0.55*n/max_its;
-        psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+        //psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+        psz = boundary_thick + (boundary_thick2-boundary_thick)*n/max_its;        
 
         c2dr.lineWidth = psz;
 
@@ -1179,7 +1186,9 @@ for(i = 0; i < imageMimes.length; i++) {
 
       index = 0;
 
-      psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+      //psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+      psz = boundary_thick + (boundary_thick2-boundary_thick)*n/max_its;        
+      
 
       z = Maths.f_1(points_prev[0]);
       if( Maths.distanceToDomain(z) < r2_ ) {
@@ -1247,7 +1256,8 @@ for(i = 0; i < imageMimes.length; i++) {
       if( n_segs === 0 ) break;
       if( n_segs > M) n = max_its;
 
-      psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+      //psz = boundary_thick - (0.75*boundary_thick)*n/max_its;
+      psz = boundary_thick + (boundary_thick2-boundary_thick)*n/max_its;        
 
       c2dr.lineWidth = psz;
 

@@ -33,11 +33,12 @@ var GUIData = (function() { //  GUI Data Closure
     "Autum":             14,
     "Winter":            15,
     "Pastel":            16,
-    "Custom":            17
+    "Dark Jet":          17,
+    "Custom":            18
   };
 
+  this.ccmi = 18 //this.color_map_list.length - 1
   this.invert_color_map = false;
-
 
   // Return closure
   return this;
@@ -193,6 +194,10 @@ function configGUI(gui/*, Maths, Drawer*/) {
     .add(Drawer, "boundary_thick", 0.2,4.0,0.1)
     .name("Thickness")
     .onFinishChange(Drawer.update);
+  var bdry_thick_sldr2 = algoset_folder
+    .add(Drawer, "boundary_thick2", 0.2,4.0,0.1)
+    .name("Thickness Final")
+    .onFinishChange(Drawer.update);    
   var over_spid_chck = algoset_folder
     .add(Drawer, "overlay_spiderweb")
     .name("Spid. over.")
@@ -273,9 +278,8 @@ function configGUI(gui/*, Maths, Drawer*/) {
 
   var color_ctrls = [];
   var createCustomColorMap = function() {
-    //GUIData.color_map = 17;
-    Drawer.createPalette(17/*GUIData.color_map*/, GUIData.invert_color_map);
-    Drawer.createPaletteMandel(17/*GUIData.color_map*/, GUIData.invert_color_map);
+    Drawer.createPalette(GUIData.ccmi, GUIData.invert_color_map);
+    Drawer.createPaletteMandel(GUIData.ccmi, GUIData.invert_color_map);
     Drawer.update_canvas_l = true;
     Drawer.update_canvas_r = true;
   }
@@ -298,7 +302,7 @@ function configGUI(gui/*, Maths, Drawer*/) {
 
   color_map_drop.onChange(
     function(value) {
-      if(value == 17) {
+      if(value == GUIData.ccmi) {
         showFolder(custom_color_map_folder);
         custom_color_map_folder.open();
       }

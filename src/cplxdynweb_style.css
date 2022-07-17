@@ -24,6 +24,14 @@ div {
   left: 16px
 }
 
+#divdoclic {
+  position: absolute;
+  font-family: Times, Utopia, serif;
+  font-size: 1.5em;
+  left: 420px;
+  top: 40px
+}
+
 #divfooter {
   position: fixed;
   font-family: Times, Utopia, serif;
